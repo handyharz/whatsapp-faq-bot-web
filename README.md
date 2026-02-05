@@ -28,9 +28,11 @@ Beautiful landing page and onboarding form for WhatsApp FAQ Bot service, inspire
 2. **Create `.env.local`:**
    ```env
    RESEND_API_KEY=re_xxxxx
-   YOUR_EMAIL=your@email.com
-   RESEND_FROM=WhatsApp FAQ Bot <onboard@yourdomain.com>
+   YOUR_EMAIL=harzkane@gmail.com
+   RESEND_FROM=WhatsApp FAQ Bot <support@exonec.com>
    ```
+   
+   **Note:** Domain `exonec.com` is verified in Resend ✅. Using `support@exonec.com` (created in Namecheap).
 
 3. **Run development server:**
    ```bash
@@ -67,8 +69,10 @@ app/
 ## Environment Variables
 
 - `RESEND_API_KEY` - Your Resend API key
-- `YOUR_EMAIL` - Email to receive form submissions
-- `RESEND_FROM` - Email address to send from (must be verified domain)
+- `YOUR_EMAIL` - Email to receive form submissions (default: `harzkane@gmail.com`)
+- `RESEND_FROM` - Email address to send from (default: `WhatsApp FAQ Bot <support@exonec.com>`)
+
+**Status:** ✅ Domain `exonec.com` is verified in Resend! Emails will send from `support@exonec.com`.
 
 ## License
 

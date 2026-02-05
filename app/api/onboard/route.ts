@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const resendApiKey = process.env.RESEND_API_KEY
 const yourEmail = process.env.YOUR_EMAIL || 'harzkane@gmail.com'
-const fromEmail = process.env.RESEND_FROM || 'WhatsApp FAQ Bot <onboard@ineluaxoi.resend.app>'
+const fromEmail = process.env.RESEND_FROM || 'WhatsApp FAQ Bot <support@exonec.com>'
 
 function formatEmail(data: {
   businessName: string
