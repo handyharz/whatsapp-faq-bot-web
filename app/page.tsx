@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { MessageSquare, Zap, Shield, TrendingUp, ArrowRight, Check } from 'lucide-react'
+import PlexusBackground from './components/PlexusBackground'
 
 export default function HomePage() {
   return (
@@ -13,27 +14,37 @@ export default function HomePage() {
         left: 0, 
         right: 0, 
         zIndex: 50,
-        background: 'rgba(26, 26, 26, 0.8)',
+        background: 'rgba(26, 26, 26, 0.95)',
         backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid #262626'
+        borderBottom: '1px solid #262626',
+        WebkitBackdropFilter: 'blur(10px)'
       }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', paddingBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MessageSquare style={{ width: '24px', height: '24px', color: '#3b82f6' }} />
-            <span style={{ fontSize: '20px', fontWeight: 600 }}>WhatsApp FAQ Bot</span>
-          </div>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-            <Link href="#features" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none' }}>Features</Link>
-            <Link href="#pricing" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none' }}>Pricing</Link>
-            <Link href="/onboard" className="btn btn-primary">Get Started</Link>
+        <div className="container md:px-6" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#ffffff', minWidth: 0, flex: '0 1 auto' }}>
+            <MessageSquare style={{ width: '20px', height: '20px', color: '#3b82f6', flexShrink: 0 }} className="md:w-6 md:h-6" />
+            <span style={{ fontSize: '16px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="desktop-only md:text-lg">
+              WhatsApp FAQ Bot
+            </span>
+            <span style={{ fontSize: '16px', fontWeight: 600 }} className="mobile-only">
+              FAQ Bot
+            </span>
+          </Link>
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }} className="md:gap-6">
+            <Link href="#features" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none', display: 'none', padding: '8px 0' }} className="md:block hover:text-white transition-colors">Features</Link>
+            <Link href="#pricing" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none', display: 'none', padding: '8px 0' }} className="md:block hover:text-white transition-colors">Pricing</Link>
+            <Link href="/onboard" className="btn btn-primary md:px-5 md:py-2.5 md:text-base" style={{ fontSize: '14px', padding: '10px 16px', whiteSpace: 'nowrap', minHeight: '40px' }}>
+              <span className="hidden sm:inline">Get Started</span>
+              <span className="sm:hidden">Start</span>
+            </Link>
           </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section style={{ paddingTop: '128px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
-        <div className="container-lg" style={{ textAlign: 'center' }}>
-          <div className="animate-fade-in" style={{ 
+      <section style={{ paddingTop: '100px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px', position: 'relative', overflow: 'hidden' }} className="md:pt-32 md:pb-20 md:px-6">
+        <PlexusBackground />
+        <div className="container-lg" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <div className="animate-fade-in md:text-sm" style={{ 
             display: 'inline-flex', 
             alignItems: 'center', 
             gap: '8px', 
@@ -41,58 +52,61 @@ export default function HomePage() {
             borderRadius: '9999px', 
             background: '#1a1a1a', 
             border: '1px solid #262626', 
-            marginBottom: '32px' 
+            marginBottom: '24px',
+            fontSize: '12px'
           }}>
-            <Zap style={{ width: '16px', height: '16px', color: '#3b82f6' }} />
-            <span style={{ fontSize: '14px', color: '#a0a0a0' }}>Automate customer support on WhatsApp</span>
+            <Zap style={{ width: '14px', height: '14px', color: '#3b82f6', flexShrink: 0 }} className="md:w-4 md:h-4" />
+            <span style={{ color: '#a0a0a0' }}>Automate customer support on WhatsApp</span>
           </div>
           
           <h1 style={{ 
-            fontSize: '48px', 
+            fontSize: '32px', 
             fontWeight: 700, 
-            marginBottom: '24px', 
+            marginBottom: '20px', 
             lineHeight: 1.2,
-            marginTop: 0
-          }}>
+            marginTop: 0,
+            paddingLeft: '8px',
+            paddingRight: '8px'
+          }} className="md:text-5xl md:mb-6 md:px-0">
             Answer customer questions
             <br />
             <span className="gradient-text">automatically on WhatsApp</span>
           </h1>
           
-          <p style={{ fontSize: '20px', color: '#a0a0a0', marginBottom: '48px', maxWidth: '672px', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '32px', maxWidth: '672px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-12 md:px-0">
             Set up an AI-powered FAQ bot for your business in minutes. 
             Never miss a customer message again.
           </p>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'center', alignItems: 'center' }}>
-            <Link href="/onboard" className="btn btn-primary" style={{ fontSize: '18px', padding: '16px 32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center', alignItems: 'center', paddingLeft: '16px', paddingRight: '16px' }} className="md:flex-row md:gap-4 md:px-0">
+            <Link href="/onboard" className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
               Get Started Free
-              <ArrowRight style={{ width: '20px', height: '20px', marginLeft: '8px', display: 'inline-block' }} />
+              <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
             </Link>
-            <button className="btn btn-secondary" style={{ fontSize: '18px', padding: '16px 32px' }}>
+            <button className="btn btn-secondary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
               Watch Demo
             </button>
           </div>
           
-          <p style={{ fontSize: '14px', color: '#666', marginTop: '24px' }}>
+          <p style={{ fontSize: '12px', color: '#666', marginTop: '20px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-sm md:mt-6 md:px-0">
             No credit card required • Setup in 5 minutes
           </p>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', background: '#0f0f0f' }}>
+      <section id="features" style={{ paddingTop: '60px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px', background: '#0f0f0f' }} className="md:py-20 md:px-6">
         <div className="container-lg">
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }} className="md:mb-16">
+            <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
               Everything you need to automate support
             </h2>
-            <p style={{ fontSize: '20px', color: '#a0a0a0', maxWidth: '672px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <p style={{ fontSize: '16px', color: '#a0a0a0', maxWidth: '672px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:px-0">
               Powerful features designed for Nigerian businesses
             </p>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gap: '20px' }} className="features-grid md:gap-6">
             {[
               {
                 icon: MessageSquare,
@@ -136,18 +150,19 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
-        <div className="container-lg">
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+      <section style={{ paddingTop: '60px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px', position: 'relative', overflow: 'hidden' }} className="md:py-20 md:px-6">
+        <PlexusBackground />
+        <div className="container-lg" style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }} className="md:mb-16">
+            <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
               How it works
             </h2>
-            <p style={{ fontSize: '20px', color: '#a0a0a0' }}>
+            <p style={{ fontSize: '16px', color: '#a0a0a0', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:px-0">
               Get started in three simple steps
             </p>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px' }}>
+          <div style={{ display: 'grid', gap: '32px' }} className="how-it-works-grid md:gap-8">
             {[
               {
                 step: '1',
@@ -192,19 +207,19 @@ export default function HomePage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px', background: '#0f0f0f' }}>
+      <section id="pricing" style={{ paddingTop: '60px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px', background: '#0f0f0f' }} className="md:py-20 md:px-6">
         <div className="container-md" style={{ textAlign: 'center' }}>
-          <h2 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
             Simple, transparent pricing
           </h2>
-          <p style={{ fontSize: '20px', color: '#a0a0a0', marginBottom: '48px' }}>
+          <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '32px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-12 md:px-0">
             Start free, scale as you grow
           </p>
           
-          <div className="card" style={{ maxWidth: '448px', marginLeft: 'auto', marginRight: 'auto' }}>
+          <div className="card md:p-6" style={{ maxWidth: '448px', marginLeft: 'auto', marginRight: 'auto', padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
-              <div style={{ fontSize: '36px', fontWeight: 700, color: '#3b82f6', marginBottom: '8px' }}>₦0/month</div>
-              <p style={{ color: '#a0a0a0', marginBottom: '16px' }}>Free Trial - Perfect for testing the waters</p>
+              <div style={{ fontSize: '28px', fontWeight: 700, color: '#3b82f6', marginBottom: '8px' }} className="md:text-4xl">₦0/month</div>
+              <p style={{ color: '#a0a0a0', marginBottom: '16px', fontSize: '14px' }} className="md:text-base">Free Trial - Perfect for testing the waters</p>
             </div>
             
             <ul style={{ textAlign: 'left', marginBottom: '32px' }}>
@@ -234,38 +249,40 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section style={{ paddingTop: '80px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
-        <div className="container-md" style={{ textAlign: 'center' }}>
-          <div className="card" style={{ 
+      <section style={{ paddingTop: '60px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px', position: 'relative', overflow: 'hidden' }} className="md:py-20 md:px-6">
+        <PlexusBackground />
+        <div className="container-md" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <div className="card md:p-12" style={{ 
             background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)', 
-            borderColor: '#3b82f6' 
+            borderColor: '#3b82f6',
+            padding: '32px 24px'
           }}>
-            <h2 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
               Ready to automate your support?
             </h2>
-            <p style={{ fontSize: '20px', color: '#a0a0a0', marginBottom: '32px' }}>
+            <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '24px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-8 md:px-0">
               Join Nigerian businesses using WhatsApp FAQ Bot
             </p>
-            <Link href="/onboard" className="btn btn-primary" style={{ fontSize: '18px', padding: '16px 32px' }}>
+            <Link href="/onboard" className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
               Get Started Free
-              <ArrowRight style={{ width: '20px', height: '20px', marginLeft: '8px', display: 'inline-block' }} />
+              <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
             </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ paddingTop: '48px', paddingBottom: '48px', paddingLeft: '24px', paddingRight: '24px', borderTop: '1px solid #262626' }}>
+      <footer style={{ paddingTop: '32px', paddingBottom: '32px', paddingLeft: '16px', paddingRight: '16px', borderTop: '1px solid #262626' }} className="md:py-12 md:px-6">
         <div className="container-lg">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <MessageSquare style={{ width: '20px', height: '20px', color: '#3b82f6' }} />
               <span style={{ fontSize: '14px', color: '#a0a0a0' }}>WhatsApp FAQ Bot</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', fontSize: '14px', color: '#666' }}>
-              <Link href="#" style={{ color: '#666', textDecoration: 'none' }}>Privacy</Link>
-              <Link href="#" style={{ color: '#666', textDecoration: 'none' }}>Terms</Link>
-              <Link href="#" style={{ color: '#666', textDecoration: 'none' }}>Contact</Link>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '16px', fontSize: '14px', color: '#666' }} className="md:gap-6">
+              <Link href="/privacy" style={{ color: '#666', textDecoration: 'none' }}>Privacy</Link>
+              <Link href="/terms" style={{ color: '#666', textDecoration: 'none' }}>Terms</Link>
+              <Link href="/contact" style={{ color: '#666', textDecoration: 'none' }}>Contact</Link>
             </div>
           </div>
         </div>

@@ -182,11 +182,64 @@ select.input option {
   border-radius: 12px;
   padding: 24px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glass reflection border effect (Resend-inspired) - subtle light reflection on borders */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.08) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .card:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.card:hover::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.2) 30%,
+    rgba(59, 130, 246, 0.3) 50%,
+    rgba(59, 130, 246, 0.2) 70%,
+    transparent 100%
+  );
 }
 
 /* Link styles */
@@ -224,21 +277,30 @@ select.input option {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 16px;
 }
 
 .container-lg {
   width: 100%;
   max-width: 1152px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 16px;
 }
 
 .container-md {
   width: 100%;
   max-width: 768px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 16px;
+}
+
+/* Mobile-first responsive padding */
+@media (min-width: 640px) {
+  .container,
+  .container-lg,
+  .container-md {
+    padding: 0 24px;
+  }
 }
 
 .flex {
@@ -493,6 +555,35 @@ select.input option {
   display: none;
 }
 
+/* Responsive visibility utilities */
+@media (max-width: 639px) {
+  .mobile-only {
+    display: inline;
+  }
+  
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .desktop-only {
+    display: inline;
+  }
+  
+  .sm\:inline {
+    display: inline;
+  }
+  
+  .sm\:hidden {
+    display: none !important;
+  }
+}
+
 .inline-flex {
   display: inline-flex;
 }
@@ -515,9 +606,99 @@ select.input option {
   transition-duration: 150ms;
 }
 
+/* Mobile optimizations */
+@media (max-width: 639px) {
+  /* Smaller font sizes on mobile */
+  .text-5xl {
+    font-size: 32px;
+  }
+  
+  .text-4xl {
+    font-size: 28px;
+  }
+  
+  .text-3xl {
+    font-size: 24px;
+  }
+  
+  .text-2xl {
+    font-size: 20px;
+  }
+  
+  /* Larger touch targets */
+  .btn {
+    min-height: 44px;
+    padding: 14px 24px;
+    font-size: 16px;
+  }
+  
+  /* Better spacing on mobile */
+  .card {
+    padding: 20px;
+  }
+  
+  /* Input improvements */
+  .input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 14px 16px;
+  }
+  
+  /* Better header spacing */
+  header {
+    padding: 12px 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+  
+  .sm\:text-left {
+    text-align: left;
+  }
+  
+  .sm\:text-center {
+    text-align: center;
+  }
+}
+
+/* How it works grid - responsive */
+.how-it-works-grid {
+  grid-template-columns: 1fr;
+}
+
+/* Features grid - responsive */
+.features-grid {
+  grid-template-columns: 1fr;
+}
+
+/* Contact cards grid - responsive */
+.contact-cards-grid {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .how-it-works-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .contact-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 768px) {
   .md\:flex {
     display: flex;
+  }
+  
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   
   .md\:grid-cols-3 {
@@ -535,11 +716,27 @@ select.input option {
   .md\:flex-row {
     flex-direction: row;
   }
+  
+  .md\:text-left {
+    text-align: left;
+  }
+  
+  .md\:hidden {
+    display: none;
+  }
+  
+  .md\:block {
+    display: block;
+  }
 }
 
-@media (min-width: 640px) {
-  .sm\:flex-row {
-    flex-direction: row;
+@media (min-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

@@ -96,35 +96,41 @@ function OnboardForm() {
         left: 0, 
         right: 0, 
         zIndex: 50,
-        background: 'rgba(26, 26, 26, 0.8)',
+        background: 'rgba(26, 26, 26, 0.95)',
         backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid #262626'
+        borderBottom: '1px solid #262626',
+        WebkitBackdropFilter: 'blur(10px)'
       }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', paddingBottom: '16px' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#ffffff' }}>
-            <MessageSquare style={{ width: '24px', height: '24px', color: '#3b82f6' }} />
-            <span style={{ fontSize: '20px', fontWeight: 600, color: '#ffffff' }}>WhatsApp FAQ Bot</span>
+        <div className="container md:px-6" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', paddingBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#ffffff', minWidth: 0, flex: '0 1 auto' }}>
+            <MessageSquare style={{ width: '20px', height: '20px', color: '#3b82f6', flexShrink: 0 }} className="md:w-6 md:h-6" />
+            <span style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} className="desktop-only md:text-lg">
+              WhatsApp FAQ Bot
+            </span>
+            <span style={{ fontSize: '16px', fontWeight: 600, color: '#ffffff' }} className="mobile-only">
+              FAQ Bot
+            </span>
           </Link>
-          <Link href="/" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none' }}>
-            <ArrowLeft style={{ width: '16px', height: '16px', display: 'inline-block', marginRight: '8px', verticalAlign: 'middle' }} />
-            Back
+          <Link href="/" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', padding: '8px 4px', minHeight: '40px', WebkitTapHighlightColor: 'transparent' }} className="hover:text-white transition-colors">
+            <ArrowLeft style={{ width: '18px', height: '18px', flexShrink: 0 }} />
+            <span className="hidden sm:inline">Back</span>
           </Link>
         </div>
       </header>
 
       {/* Form Section */}
-      <section style={{ paddingTop: '128px', paddingBottom: '80px', paddingLeft: '24px', paddingRight: '24px' }}>
+      <section style={{ paddingTop: '100px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px' }} className="md:pt-32 md:pb-20 md:px-6">
         <div className="container-md">
-          <div style={{ textAlign: 'center', marginBottom: '48px' }} className="animate-fade-in">
-            <h1 style={{ fontSize: '36px', fontWeight: 700, marginBottom: '16px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }} className="animate-fade-in md:mb-12">
+            <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
               Get started in minutes
             </h1>
-            <p style={{ fontSize: '20px', color: '#a0a0a0' }}>
+            <p style={{ fontSize: '16px', color: '#a0a0a0', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:px-0">
               Tell us about your business and we'll set up your WhatsApp FAQ bot
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="card animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <form onSubmit={handleSubmit} className="card animate-fade-in md:p-6" style={{ animationDelay: '0.1s', padding: '24px' }}>
             {status === 'error' && (
               <div style={{ 
                 marginBottom: '24px', 
