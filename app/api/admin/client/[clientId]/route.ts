@@ -3,11 +3,11 @@ import { fetchBackendAPI } from '../../../../lib/fetch-utils';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { clientId: string } }
+  { params }: { params: Promise<{ clientId: string }> }
 ) {
   try {
     const cookieHeader = request.headers.get('cookie') || '';
-    const clientId = params.clientId;
+    const { clientId } = await params;
 
     const response = await fetchBackendAPI(
       `/api/admin/client/${clientId}`,
@@ -41,11 +41,11 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { clientId: string } }
+  { params }: { params: Promise<{ clientId: string }> }
 ) {
   try {
     const cookieHeader = request.headers.get('cookie') || '';
-    const clientId = params.clientId;
+    const { clientId } = await params;
     const body = await request.json();
 
     const response = await fetchBackendAPI(

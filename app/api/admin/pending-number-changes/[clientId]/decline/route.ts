@@ -7,11 +7,11 @@ import { fetchBackendAPI } from '../../../../../lib/fetch-utils';
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { clientId: string } }
+  { params }: { params: Promise<{ clientId: string }> }
 ) {
   try {
     const cookieHeader = request.headers.get('cookie') || '';
-    const { clientId } = params;
+    const { clientId } = await params;
     const body = await request.json();
 
     const response = await fetchBackendAPI(
