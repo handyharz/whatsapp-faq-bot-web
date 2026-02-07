@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { fetchWithRetry } from '../../lib/fetch-utils'
 
 const resendApiKey = process.env.RESEND_API_KEY
 const yourEmail = process.env.YOUR_EMAIL || 'harzkane@gmail.com'
@@ -11,6 +12,10 @@ function formatEmail(data: {
   email: string
   address?: string
   instagram?: string
+  facebook?: string
+  twitter?: string
+  website?: string
+  tiktok?: string
 }): string {
   return `
     <!DOCTYPE html>
@@ -49,10 +54,16 @@ function formatEmail(data: {
                 <td style="padding: 8px 0; color: #0a0a0a;">${data.address}</td>
               </tr>
               ` : ''}
-              ${data.instagram ? `
+              ${data.instagram || data.facebook || data.twitter || data.website || data.tiktok ? `
               <tr>
-                <td style="padding: 8px 0; color: #666; font-weight: 500;">Instagram:</td>
-                <td style="padding: 8px 0; color: #0a0a0a;">${data.instagram}</td>
+                <td style="padding: 8px 0; color: #666; font-weight: 500; vertical-align: top;">Social Media:</td>
+                <td style="padding: 8px 0; color: #0a0a0a;">
+                  ${data.instagram ? `<div>Instagram: ${data.instagram}</div>` : ''}
+                  ${data.facebook ? `<div>Facebook: ${data.facebook}</div>` : ''}
+                  ${data.twitter ? `<div>Twitter/X: ${data.twitter}</div>` : ''}
+                  ${data.website ? `<div>Website: ${data.website}</div>` : ''}
+                  ${data.tiktok ? `<div>TikTok: ${data.tiktok}</div>` : ''}
+                </td>
               </tr>
               ` : ''}
             </table>
@@ -86,25 +97,36 @@ export async function POST(request: NextRequest) {
       whatsappNumber: data.whatsappNumber,
       email: data.email,
       address: data.address,
-      instagram: data.instagram,
+      socialMedia: {
+        instagram: data.instagram,
+        facebook: data.facebook,
+        twitter: data.twitter,
+        website: data.website,
+        tiktok: data.tiktok,
+      },
     })
 
-    // Send email via Resend
+    // Send email via Resend (using fetchWithRetry utility)
     if (resendApiKey) {
       try {
-        const emailResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
+        const emailResponse = await fetchWithRetry(
+          'https://api.resend.com/emails',
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: fromEmail,
+              to: yourEmail,
+              subject: `🎉 New Signup: ${data.businessName} (${data.niche})`,
+              html: formatEmail(data),
+            }),
           },
-          body: JSON.stringify({
-            from: fromEmail,
-            to: yourEmail,
-            subject: `🎉 New Signup: ${data.businessName} (${data.niche})`,
-            html: formatEmail(data),
-          }),
-        })
+          3, // maxRetries
+          30000 // timeout: 30 seconds (Resend API, not our backend)
+        )
 
         const emailData = await emailResponse.json()
 
@@ -114,8 +136,8 @@ export async function POST(request: NextRequest) {
         } else {
           console.log('✅ Email sent:', emailData.id)
         }
-      } catch (emailError) {
-        console.error('❌ Email error:', emailError)
+      } catch (emailError: any) {
+        console.error('❌ Email error after retries:', emailError.message)
         // Don't fail the request if email fails
       }
     } else {

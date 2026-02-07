@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { fetchWithRetry } from '../../lib/fetch-utils'
 
 const resendApiKey = process.env.RESEND_API_KEY
 const yourEmail = process.env.YOUR_EMAIL || 'harzkane@gmail.com'
@@ -73,23 +74,28 @@ export async function POST(request: NextRequest) {
       subject: data.subject,
     })
 
-    // Send email via Resend
+    // Send email via Resend (using fetchWithRetry utility)
     if (resendApiKey) {
       try {
-        const emailResponse = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${resendApiKey}`,
-            'Content-Type': 'application/json',
+        const emailResponse = await fetchWithRetry(
+          'https://api.resend.com/emails',
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: fromEmail,
+              to: yourEmail,
+              replyTo: data.email,
+              subject: `📧 Contact Form: ${data.subject}`,
+              html: formatContactEmail(data),
+            }),
           },
-          body: JSON.stringify({
-            from: fromEmail,
-            to: yourEmail,
-            replyTo: data.email,
-            subject: `📧 Contact Form: ${data.subject}`,
-            html: formatContactEmail(data),
-          }),
-        })
+          3, // maxRetries
+          30000 // timeout: 30 seconds (Resend API, not our backend)
+        )
 
         const emailData = await emailResponse.json()
 
@@ -99,8 +105,8 @@ export async function POST(request: NextRequest) {
         } else {
           console.log('✅ Contact email sent:', emailData.id)
         }
-      } catch (emailError) {
-        console.error('❌ Email error:', emailError)
+      } catch (emailError: any) {
+        console.error('❌ Email error after retries:', emailError.message)
         // Don't fail the request if email fails
       }
     } else {

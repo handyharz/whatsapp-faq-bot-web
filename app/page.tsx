@@ -1,10 +1,45 @@
 'use client'
 
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { MessageSquare, Zap, Shield, TrendingUp, ArrowRight, Check } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { MessageSquare, Zap, Shield, TrendingUp, ArrowRight, Check, LogOut, LayoutDashboard } from 'lucide-react'
 import PlexusBackground from './components/PlexusBackground'
 
 export default function HomePage() {
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Check if user is logged in
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.user) {
+          setUser(data.user)
+        }
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      })
+      setUser(null)
+      router.push('/')
+      router.refresh()
+    } catch (err) {
+      console.error('Logout error:', err)
+    }
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#ffffff' }}>
       {/* Header */}
@@ -32,10 +67,59 @@ export default function HomePage() {
           <nav style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }} className="md:gap-6">
             <Link href="#features" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none', display: 'none', padding: '8px 0' }} className="md:block hover:text-white transition-colors">Features</Link>
             <Link href="#pricing" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none', display: 'none', padding: '8px 0' }} className="md:block hover:text-white transition-colors">Pricing</Link>
-            <Link href="/onboard" className="btn btn-primary md:px-5 md:py-2.5 md:text-base" style={{ fontSize: '14px', padding: '10px 16px', whiteSpace: 'nowrap', minHeight: '40px' }}>
-              <span className="hidden sm:inline">Get Started</span>
-              <span className="sm:hidden">Start</span>
-            </Link>
+            
+            {!loading && user ? (
+              // User is logged in - show dashboard and logout
+              <>
+                <Link 
+                  href={user.role === 'admin' ? '/admin' : '/dashboard'} 
+                  style={{ 
+                    fontSize: '14px', 
+                    color: '#a0a0a0', 
+                    textDecoration: 'none', 
+                    padding: '8px 0', 
+                    whiteSpace: 'nowrap',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }} 
+                  className="hover:text-white transition-colors"
+                >
+                  <LayoutDashboard style={{ width: '16px', height: '16px' }} />
+                  {user.role === 'admin' ? 'Admin Dashboard' : 'Dashboard'}
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  style={{ 
+                    fontSize: '14px', 
+                    color: '#a0a0a0', 
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px 0', 
+                    whiteSpace: 'nowrap',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }} 
+                  className="hover:text-white transition-colors"
+                >
+                  <LogOut style={{ width: '16px', height: '16px' }} />
+                  Logout
+                </button>
+              </>
+            ) : (
+              // User is not logged in - show login and get started
+              <>
+                <Link href="/login" style={{ fontSize: '14px', color: '#a0a0a0', textDecoration: 'none', padding: '8px 0', whiteSpace: 'nowrap' }} className="hover:text-white transition-colors">
+                  Login
+                </Link>
+                <Link href="/onboard" className="btn btn-primary md:px-5 md:py-2.5 md:text-base" style={{ fontSize: '14px', padding: '10px 16px', whiteSpace: 'nowrap', minHeight: '40px' }}>
+                  <span className="hidden sm:inline">Get Started</span>
+                  <span className="sm:hidden">Start</span>
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </header>
@@ -60,7 +144,7 @@ export default function HomePage() {
           </div>
           
           <h1 style={{ 
-            fontSize: '32px', 
+            fontSize: '62px', 
             fontWeight: 700, 
             marginBottom: '20px', 
             lineHeight: 1.2,
@@ -79,13 +163,26 @@ export default function HomePage() {
           </p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center', alignItems: 'center', paddingLeft: '16px', paddingRight: '16px' }} className="md:flex-row md:gap-4 md:px-0">
-            <Link href="/onboard" className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
-              Get Started Free
-              <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
-            </Link>
-            <button className="btn btn-secondary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
-              Watch Demo
-            </button>
+            {!loading && user ? (
+              <Link 
+                href={user.role === 'admin' ? '/admin' : '/dashboard'} 
+                className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" 
+                style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}
+              >
+                Go to {user.role === 'admin' ? 'Admin' : 'Client'} Dashboard
+                <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
+              </Link>
+            ) : (
+              <>
+                <Link href="/onboard" className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
+                  Get Started Free
+                  <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
+                </Link>
+                <button className="btn btn-secondary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
+                  Watch Demo
+                </button>
+              </>
+            )}
           </div>
           
           <p style={{ fontSize: '12px', color: '#666', marginTop: '20px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-sm md:mt-6 md:px-0">
@@ -208,42 +305,152 @@ export default function HomePage() {
 
       {/* Pricing Section */}
       <section id="pricing" style={{ paddingTop: '60px', paddingBottom: '60px', paddingLeft: '16px', paddingRight: '16px', background: '#0f0f0f' }} className="md:py-20 md:px-6">
-        <div className="container-md" style={{ textAlign: 'center' }}>
+        <div className="container-lg" style={{ textAlign: 'center' }}>
           <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
             Simple, transparent pricing
           </h2>
-          <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '32px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-12 md:px-0">
+          <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '48px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-12 md:px-0">
             Start free, scale as you grow
           </p>
           
-          <div className="card md:p-6" style={{ maxWidth: '448px', marginLeft: 'auto', marginRight: 'auto', padding: '24px' }}>
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{ fontSize: '28px', fontWeight: 700, color: '#3b82f6', marginBottom: '8px' }} className="md:text-4xl">₦0/month</div>
-              <p style={{ color: '#a0a0a0', marginBottom: '16px', fontSize: '14px' }} className="md:text-base">Free Trial - Perfect for testing the waters</p>
-            </div>
-            
-            <ul style={{ textAlign: 'left', marginBottom: '32px' }}>
-              {[
-                'Unlimited FAQ responses',
-                '24/7 automated support',
-                'Custom FAQ templates',
-                'Email support',
-                'Basic analytics',
-              ].map((item, index) => (
-                <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                  <Check style={{ width: '20px', height: '20px', color: '#3b82f6', flexShrink: 0 }} />
-                  <span style={{ color: '#a0a0a0' }}>{item}</span>
-                </li>
-              ))}
-            </ul>
-            
-            <Link href="/onboard" className="btn btn-primary" style={{ width: '100%' }}>
-              Get Started Free
-            </Link>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '24px', 
+            maxWidth: '1200px', 
+            marginLeft: 'auto', 
+            marginRight: 'auto' 
+          }} className="md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                name: 'Free Trial',
+                price: '₦0',
+                period: '7 days',
+                description: 'Perfect for testing the waters',
+                features: [
+                  'Full features',
+                  'Unlimited messages',
+                  'Basic FAQs',
+                  'Business hours',
+                ],
+                highlighted: false,
+              },
+              {
+                name: 'Starter',
+                price: '₦5,000',
+                period: '/month',
+                description: 'Great for small businesses',
+                features: [
+                  'Up to 50 FAQs',
+                  '1,000 messages/month',
+                  'Business hours',
+                  'Email support',
+                  'Basic analytics',
+                ],
+                highlighted: false,
+              },
+              {
+                name: 'Professional',
+                price: '₦10,000',
+                period: '/month',
+                description: 'Most popular choice',
+                features: [
+                  'Up to 200 FAQs',
+                  '5,000 messages/month',
+                  'Business hours',
+                  'Priority support',
+                  'Advanced analytics',
+                  'FAQ templates',
+                  'Custom branding',
+                ],
+                highlighted: true,
+              },
+              {
+                name: 'Enterprise',
+                price: '₦20,000',
+                period: '/month',
+                description: 'For growing businesses',
+                features: [
+                  'Unlimited FAQs',
+                  'Unlimited messages',
+                  'Business hours',
+                  'Dedicated support',
+                  'Custom integrations',
+                  'White-label option',
+                  'API access',
+                ],
+                highlighted: false,
+              },
+            ].map((tier, index) => (
+              <div
+                key={index}
+                className="card"
+                style={{
+                  padding: '32px 24px',
+                  position: 'relative',
+                  border: tier.highlighted ? '2px solid #3b82f6' : '1px solid #262626',
+                  background: tier.highlighted ? 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)' : undefined,
+                  transform: tier.highlighted ? 'scale(1.05)' : undefined,
+                  zIndex: tier.highlighted ? 1 : 0,
+                }}
+              >
+                {tier.highlighted && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: '#3b82f6',
+                    color: '#ffffff',
+                    padding: '4px 16px',
+                    borderRadius: '9999px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                  }}>
+                    Recommended
+                  </div>
+                )}
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '8px' }}>{tier.name}</h3>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '4px', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '32px', fontWeight: 700, color: '#3b82f6' }} className="md:text-4xl">{tier.price}</span>
+                    <span style={{ fontSize: '16px', color: '#a0a0a0' }}>{tier.period}</span>
+                  </div>
+                  <p style={{ color: '#a0a0a0', fontSize: '14px' }}>{tier.description}</p>
+                </div>
+                
+                <ul style={{ textAlign: 'left', marginBottom: '32px', listStyle: 'none', padding: 0 }}>
+                  {tier.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '12px' }}>
+                      <Check style={{ width: '20px', height: '20px', color: '#3b82f6', flexShrink: 0, marginTop: '2px' }} />
+                      <span style={{ color: '#a0a0a0', fontSize: '14px' }}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                {!loading && user ? (
+                  <Link 
+                    href={user.role === 'admin' ? '/admin' : '/dashboard'} 
+                    className={tier.highlighted ? 'btn btn-primary' : 'btn btn-secondary'}
+                    style={{ width: '100%' }}
+                  >
+                    Go to Dashboard
+                  </Link>
+                ) : (
+                  <Link 
+                    href="/onboard" 
+                    className={tier.highlighted ? 'btn btn-primary' : 'btn btn-secondary'}
+                    style={{ width: '100%' }}
+                  >
+                    {tier.name === 'Free Trial' ? 'Get Started Free' : 'Choose Plan'}
+                  </Link>
+                )}
+              </div>
+            ))}
           </div>
           
-          <p style={{ fontSize: '14px', color: '#666', marginTop: '32px' }}>
-            Paid plans coming soon • Contact us for enterprise pricing
+          <p style={{ fontSize: '14px', color: '#666', marginTop: '48px' }}>
+            All plans include 24/7 automated support • Contact us for custom enterprise pricing
           </p>
         </div>
       </section>
@@ -263,10 +470,21 @@ export default function HomePage() {
             <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '24px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-8 md:px-0">
               Join Nigerian businesses using WhatsApp FAQ Bot
             </p>
-            <Link href="/onboard" className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
-              Get Started Free
-              <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
-            </Link>
+            {!loading && user ? (
+              <Link 
+                href={user.role === 'admin' ? '/admin' : '/dashboard'} 
+                className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" 
+                style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}
+              >
+                Go to {user.role === 'admin' ? 'Admin' : 'Client'} Dashboard
+                <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
+              </Link>
+            ) : (
+              <Link href="/onboard" className="btn btn-primary md:max-w-none md:text-lg md:py-4 md:px-8" style={{ fontSize: '16px', padding: '14px 28px', width: '100%', maxWidth: '280px' }}>
+                Get Started Free
+                <ArrowRight style={{ width: '18px', height: '18px', marginLeft: '8px', display: 'inline-block' }} />
+              </Link>
+            )}
           </div>
         </div>
       </section>

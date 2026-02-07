@@ -16,6 +16,10 @@ function OnboardForm() {
     email: '',
     address: '',
     instagram: '',
+    facebook: '',
+    twitter: '',
+    website: '',
+    tiktok: '',
   })
   
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -233,18 +237,81 @@ function OnboardForm() {
               </div>
 
               <div>
-                <label htmlFor="instagram" style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}>
-                  Instagram Handle
+                <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '12px' }}>
+                  Social Media (Optional)
                 </label>
-                <input
-                  type="text"
-                  id="instagram"
-                  name="instagram"
-                  value={formData.instagram}
-                  onChange={handleChange}
-                  placeholder="e.g., @harzkane"
-                  className="input"
-                />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div>
+                    <label htmlFor="instagram" style={{ display: 'block', fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+                      Instagram
+                    </label>
+                    <input
+                      type="text"
+                      id="instagram"
+                      name="instagram"
+                      value={formData.instagram}
+                      onChange={handleChange}
+                      placeholder="e.g., @harzkane"
+                      className="input"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="facebook" style={{ display: 'block', fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+                      Facebook
+                    </label>
+                    <input
+                      type="text"
+                      id="facebook"
+                      name="facebook"
+                      value={formData.facebook}
+                      onChange={handleChange}
+                      placeholder="e.g., yourbusiness"
+                      className="input"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="twitter" style={{ display: 'block', fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+                      Twitter/X
+                    </label>
+                    <input
+                      type="text"
+                      id="twitter"
+                      name="twitter"
+                      value={formData.twitter}
+                      onChange={handleChange}
+                      placeholder="e.g., @yourbusiness"
+                      className="input"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="website" style={{ display: 'block', fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+                      Website
+                    </label>
+                    <input
+                      type="url"
+                      id="website"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      placeholder="e.g., https://yourbusiness.com"
+                      className="input"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="tiktok" style={{ display: 'block', fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+                      TikTok
+                    </label>
+                    <input
+                      type="text"
+                      id="tiktok"
+                      name="tiktok"
+                      value={formData.tiktok}
+                      onChange={handleChange}
+                      placeholder="e.g., @yourbusiness"
+                      className="input"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
