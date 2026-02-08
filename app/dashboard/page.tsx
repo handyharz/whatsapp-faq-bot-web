@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { MessageSquare, Settings, BarChart3, FileText, LogOut, Loader2 } from 'lucide-react'
 import PlexusBackground from '../components/PlexusBackground'
+import WhatsAppConnection from '../components/WhatsAppConnection'
 
 function DashboardContent() {
   const router = useRouter()
@@ -13,6 +14,7 @@ function DashboardContent() {
   const [client, setClient] = useState<any>(null)
   const [stats, setStats] = useState<any>(null)
   const [error, setError] = useState('')
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting' | 'reconnecting' | 'unknown'>('unknown')
 
   useEffect(() => {
     const loadDashboardData = () => {
@@ -26,17 +28,21 @@ function DashboardContent() {
             return
           }
 
-          // Fetch client profile and stats
+          // Fetch client profile, stats, and connection status
           Promise.all([
             fetch('/api/client/profile', { credentials: 'include' }).then(r => r.json()),
             fetch('/api/client/stats', { credentials: 'include' }).then(r => r.json()),
+            fetch('/api/client/whatsapp/status', { credentials: 'include' }).then(r => r.json()),
           ])
-            .then(([profileRes, statsRes]) => {
+            .then(([profileRes, statsRes, connectionRes]) => {
               if (profileRes.success) {
                 setClient(profileRes.client)
               }
               if (statsRes.success) {
                 setStats(statsRes.stats)
+              }
+              if (connectionRes.success) {
+                setConnectionStatus(connectionRes.status || 'unknown')
               }
               setLoading(false)
             })
@@ -158,6 +164,78 @@ function DashboardContent() {
             </p>
           </div>
 
+          {/* Connection Reminder Banner (if not connected) */}
+          {connectionStatus !== 'connected' && (
+            <div style={{ 
+              marginBottom: '24px',
+              padding: '20px',
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{ 
+                width: '48px', 
+                height: '48px', 
+                borderRadius: '12px', 
+                background: 'rgba(59, 130, 246, 0.2)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <MessageSquare style={{ width: '24px', height: '24px', color: '#3b82f6' }} />
+              </div>
+              <div style={{ flex: 1, minWidth: '200px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                  Complete Your Setup
+                </h3>
+                <p style={{ fontSize: '14px', color: '#a0a0a0', margin: 0 }}>
+                  Connect your WhatsApp to start receiving messages from customers
+                </p>
+              </div>
+              <Link 
+                href="/dashboard"
+                onClick={(e) => {
+                  e.preventDefault()
+                  // Scroll to WhatsApp connection component
+                  const connectionEl = document.querySelector('[data-whatsapp-connection]')
+                  if (connectionEl) {
+                    connectionEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  }
+                }}
+                className="btn btn-primary"
+                style={{ 
+                  fontSize: '14px', 
+                  padding: '10px 20px',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0
+                }}
+              >
+                Connect WhatsApp
+              </Link>
+            </div>
+          )}
+
+          {/* Important Notice Banner (always visible when connected) */}
+          {connectionStatus === 'connected' && (
+            <div style={{ 
+              marginBottom: '24px',
+              padding: '16px',
+              background: 'rgba(59, 130, 246, 0.05)',
+              border: '1px solid rgba(59, 130, 246, 0.2)',
+              borderRadius: '8px',
+              fontSize: '13px',
+              color: '#a0a0a0',
+              lineHeight: '1.5'
+            }}>
+              <strong style={{ color: '#ffffff' }}>Important:</strong> Message delivery depends on your phone being online and WhatsApp running. If your phone is offline or WhatsApp is closed, messages may not be delivered.
+            </div>
+          )}
+
           {/* Subscription Status */}
           <div className="card md:mb-8 md:p-6" style={{ marginBottom: '24px', padding: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
@@ -238,6 +316,14 @@ function DashboardContent() {
               </div>
             </div>
           )}
+
+          {/* WhatsApp Connection */}
+          <div style={{ marginBottom: '32px' }} className="md:mb-12" data-whatsapp-connection>
+            <WhatsAppConnection 
+              pollingInterval={3000}
+              onStatusChange={(status) => setConnectionStatus(status)}
+            />
+          </div>
 
           {/* Quick Actions */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }} className="md:grid-cols-2 md:gap-6">

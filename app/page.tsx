@@ -140,7 +140,7 @@ export default function HomePage() {
             fontSize: '12px'
           }}>
             <Zap style={{ width: '14px', height: '14px', color: '#3b82f6', flexShrink: 0 }} className="md:w-4 md:h-4" />
-            <span style={{ color: '#a0a0a0' }}>Automate customer support on WhatsApp</span>
+            <span style={{ color: '#a0a0a0' }}>Production-ready WhatsApp automation platform</span>
           </div>
           
           <h1 style={{ 
@@ -152,14 +152,13 @@ export default function HomePage() {
             paddingLeft: '8px',
             paddingRight: '8px'
           }} className="md:text-5xl md:mb-6 md:px-0">
-            Answer customer questions
+            Production-Ready WhatsApp
             <br />
-            <span className="gradient-text">automatically on WhatsApp</span>
+            <span className="gradient-text">Automation for Real Businesses</span>
           </h1>
           
           <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '32px', maxWidth: '672px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-12 md:px-0">
-            Set up an AI-powered FAQ bot for your business in minutes. 
-            Never miss a customer message again.
+            A business-ready platform that manages multiple WhatsApp connections per workspace — with real status monitoring, health checks, and dependable message routing. Built for real business use, not just testing.
           </p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center', alignItems: 'center', paddingLeft: '16px', paddingRight: '16px' }} className="md:flex-row md:gap-4 md:px-0">
@@ -196,10 +195,10 @@ export default function HomePage() {
         <div className="container-lg">
           <div style={{ textAlign: 'center', marginBottom: '48px' }} className="md:mb-16">
             <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
-              Everything you need to automate support
+              Built for Real WhatsApp Operations
             </h2>
             <p style={{ fontSize: '16px', color: '#a0a0a0', maxWidth: '672px', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:px-0">
-              Powerful features designed for Nigerian businesses
+              We've evolved from MVP to a production-grade platform with true multi-tenant architecture
             </p>
           </div>
           
@@ -207,33 +206,33 @@ export default function HomePage() {
             {[
               {
                 icon: MessageSquare,
-                title: 'Smart FAQ Matching',
-                description: 'AI-powered keyword matching understands customer questions in natural language.',
-              },
-              {
-                icon: Zap,
-                title: 'Instant Responses',
-                description: 'Reply to customers in seconds, even outside business hours.',
+                title: 'Multi-Connection Architecture',
+                description: 'Each business gets their own dedicated WhatsApp connection. Customers message your actual number, not a shared platform number.',
               },
               {
                 icon: Shield,
-                title: 'Reliable & Secure',
-                description: 'Built on WhatsApp Web protocol. Your data stays private.',
+                title: 'Real-Time Health Monitoring',
+                description: 'Track connection status, message activity, and delivery health. Know before your customers do if something goes wrong.',
               },
               {
                 icon: TrendingUp,
-                title: 'Easy Setup',
-                description: 'No coding required. Set up your FAQs in minutes.',
-              },
-              {
-                icon: MessageSquare,
-                title: 'Customizable',
-                description: 'Tailor responses to match your brand voice and business needs.',
+                title: 'Business-Ready Infrastructure',
+                description: 'Built for real business use with reliable message routing, automatic reconnection, and operational insights.',
               },
               {
                 icon: Zap,
-                title: '24/7 Availability',
-                description: 'Never miss a customer message, even when you\'re offline.',
+                title: 'Seamless Onboarding',
+                description: 'Easy QR code connection, automated setup wizard, and clear status indicators. Get live in minutes.',
+              },
+              {
+                icon: MessageSquare,
+                title: 'Smart FAQ Matching',
+                description: 'AI-powered keyword matching understands customer questions in natural language and responds instantly.',
+              },
+              {
+                icon: Shield,
+                title: 'Scalable & Reliable',
+                description: 'True multi-tenancy with isolated workspaces. Designed to grow with your business, not just handle demos.',
               },
             ].map((feature, index) => (
               <div key={index} className="card animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -263,18 +262,18 @@ export default function HomePage() {
             {[
               {
                 step: '1',
-                title: 'Sign Up',
-                description: 'Fill out our onboarding form with your business details.',
+                title: 'Create Your Workspace',
+                description: 'Sign up and create your business workspace in our self-serve onboarding wizard.',
               },
               {
                 step: '2',
-                title: 'Connect WhatsApp',
-                description: 'Scan QR code to connect your WhatsApp number.',
+                title: 'Connect Your WhatsApp',
+                description: 'Scan the QR code to link your WhatsApp number. Each business gets their own dedicated connection.',
               },
               {
                 step: '3',
-                title: 'Start Automating',
-                description: 'Your bot is live! Customers get instant answers.',
+                title: 'Go Live Instantly',
+                description: 'Your bot is live! Customers message your actual WhatsApp number and get instant FAQ responses.',
               },
             ].map((item, index) => (
               <div key={index} className="animate-fade-in" style={{ textAlign: 'center', animationDelay: `${index * 0.2}s` }}>
@@ -310,7 +309,7 @@ export default function HomePage() {
             Simple, transparent pricing
           </h2>
           <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '48px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-12 md:px-0">
-            Start free, scale as you grow
+            Start free, scale as you grow. All plans include your own dedicated WhatsApp connection.
           </p>
           
           <div style={{ 
@@ -450,8 +449,25 @@ export default function HomePage() {
           </div>
           
           <p style={{ fontSize: '14px', color: '#666', marginTop: '48px' }}>
-            All plans include 24/7 automated support • Contact us for custom enterprise pricing
+            All plans include dedicated WhatsApp connection, health monitoring, and 24/7 automated support • Contact us for custom enterprise pricing
           </p>
+          
+          {/* Expectation Setting Note */}
+          <div style={{ 
+            marginTop: '48px',
+            padding: '20px',
+            background: 'rgba(59, 130, 246, 0.05)',
+            border: '1px solid rgba(59, 130, 246, 0.2)',
+            borderRadius: '8px',
+            maxWidth: '800px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'left'
+          }}>
+            <p style={{ fontSize: '13px', color: '#a0a0a0', margin: 0, lineHeight: '1.6' }}>
+              <strong style={{ color: '#ffffff' }}>Note:</strong> WhatsApp automation relies on your phone being online and WhatsApp running, in line with WhatsApp's device model. Message delivery depends on these factors, which is standard for all WhatsApp-based solutions.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -465,10 +481,10 @@ export default function HomePage() {
             padding: '32px 24px'
           }}>
             <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '12px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-4xl md:mb-4 md:px-0">
-              Ready to automate your support?
+              Ready to scale your WhatsApp operations?
             </h2>
             <p style={{ fontSize: '16px', color: '#a0a0a0', marginBottom: '24px', paddingLeft: '16px', paddingRight: '16px' }} className="md:text-xl md:mb-8 md:px-0">
-              Join Nigerian businesses using WhatsApp FAQ Bot
+              Join businesses using our business-ready WhatsApp automation platform
             </p>
             {!loading && user ? (
               <Link 
